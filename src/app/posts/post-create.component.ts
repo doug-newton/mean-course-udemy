@@ -6,4 +6,10 @@ import { Component } from "@angular/core";
     styleUrls: ['./post-create.component.scss']
 })
 export class PostCreateComponent {
+    newPost = ''
+    inputPost = ''
+
+    onAddPost(){
+        this.newPost = this.inputPost;
+    }
 }
