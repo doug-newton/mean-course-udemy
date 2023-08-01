@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Post } from "./post.model";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, map } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 
 @Injectable({
@@ -13,10 +13,20 @@ export class PostsService {
     constructor(private http: HttpClient) { }
 
     getPosts() {
-        this.http.get<{message:string, posts: Post[]}>('http://localhost:3000/api/posts').subscribe({
-            next: response => {
-                console.log(response)
-                this.posts = response.posts
+        this.http.get<{message:string, posts: any[]}>('http://localhost:3000/api/posts')
+        .pipe(map((response) => {
+            return response.posts.map((post) => {
+                return {
+                    title: post.title,
+                    content: post.content,
+                    id: post._id
+                }
+            })
+        }))
+        .subscribe({
+            next: posts => {
+                console.log(posts)
+                this.posts = posts
                 this.posts$.next([...this.posts])
             }
         });
