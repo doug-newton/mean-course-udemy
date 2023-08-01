@@ -7,9 +7,13 @@ import { PostsService } from "../posts.service";
     templateUrl: './post-list.component.html',
     styleUrls: ['./post-list.component.scss']
 })
-export class PostListComponent {
+export class PostListComponent implements OnInit {
 
     constructor(public postsService: PostsService) { }
 
     public posts$ = this.postsService.posts$
+
+    ngOnInit(): void {
+        this.postsService.getPosts()
+    }
 }
