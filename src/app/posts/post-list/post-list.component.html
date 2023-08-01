@@ -4,6 +4,10 @@
             {{post.title}}
         </mat-expansion-panel-header>
         <p>{{post.content}}</p>
+        <mat-action-panel>
+            <button mat-button color="primary">EDIT</button>
+            <button mat-button color="warn">DELETE</button>
+        </mat-action-panel>
     </mat-expansion-panel>
 </mat-accordion>
 <p *ngIf="(posts$ | async).length == 0">no posts added yet!</p>
