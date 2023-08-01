@@ -40,9 +40,10 @@ export class PostsService {
             content: content
         }
 
-        this.http.post<{ message: string }>('http://localhost:3000/api/posts', post).subscribe({
+        this.http.post<{ message: string, postId: string }>('http://localhost:3000/api/posts', post).subscribe({
             next: response => {
                 console.log(response)
+                post.id = response.postId
                 this.posts.push(post);
                 this.posts$.next([...this.posts]);
             }
