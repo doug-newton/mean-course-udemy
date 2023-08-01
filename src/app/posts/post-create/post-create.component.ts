@@ -20,5 +20,7 @@ export class PostCreateComponent {
             postForm.value.title,
             postForm.value.content
         )
+
+        postForm.resetForm()
     }
 }
