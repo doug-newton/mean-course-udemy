@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Post } from "./post.model";
 import { BehaviorSubject, map } from "rxjs";
 import { HttpClient } from "@angular/common/http";
+import { response } from "express";
 
 @Injectable({
     providedIn: 'root'
@@ -46,6 +47,15 @@ export class PostsService {
                 this.posts$.next([...this.posts]);
             }
         })
+    }
 
+    deletePost(postId: string) {
+        this.http.delete<{message: string}>('http://localhost:3000/api/posts/' + postId).subscribe({
+            next: response => {
+                console.log(response.message);
+                this.posts = this.posts.filter((post) => post.id !== postId)
+                this.posts$.next([...this.posts])
+            }
+        })
     }
 }

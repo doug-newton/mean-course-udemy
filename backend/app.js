@@ -44,4 +44,12 @@ app.post('/api/posts', (req, res, next) => {
     })
 })
 
+app.delete('/api/posts/:id', (req, res, next) => {
+    const id = req.params.id
+    Post.deleteOne({ _id: id }).then(result => {
+        console.log(result)
+        res.status(200).json({ message: 'post deleted successfully!' })
+    })
+})
+
 module.exports = app
