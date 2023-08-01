@@ -1,4 +1,13 @@
 const express = require('express')
+const mongoose = require('mongoose')
+
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
+.then(()=>{
+    console.log('connected to database')
+})
+.catch(()=>{
+    console.log('db connection failed')
+})
 
 const app = express()
 
