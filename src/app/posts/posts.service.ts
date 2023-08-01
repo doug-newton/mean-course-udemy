@@ -29,7 +29,13 @@ export class PostsService {
             content: content
         }
 
-        this.posts.push(post);
-        this.posts$.next([...this.posts]);
+        this.http.post<{ message: string }>('http://localhost:3000/api/posts', post).subscribe({
+            next: response => {
+                console.log(response)
+                this.posts.push(post);
+                this.posts$.next([...this.posts]);
+            }
+        })
+
     }
 }
