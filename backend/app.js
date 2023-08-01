@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const postsRoutes = require('./routes/posts')
 
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
 .then(()=>{
@@ -10,8 +11,6 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
 })
 
 const app = express()
-
-const Post = require('./models/post')
 
 app.use(express.json())
 
@@ -24,63 +23,6 @@ app.use((req, res, next) => {
     next()
 });
 
-app.get('/api/posts', (req, res, next) => {
-    Post.find().then(posts => {
-        res.status(200).json({
-            message: 'Posts fetched successfully',
-            posts: posts
-        })
-    })
-})
-
-app.get('/api/posts/:id', (req, res, next) => {
-    const id = req.params.id
-    Post.findOne({ _id: id }).then(post => {
-        if (post) {
-            res.status(200).json({
-                message: 'Post found',
-                post: post
-            })
-        }
-        else {
-            res.status(404).json({
-                message: 'Post not found',
-                post: null
-            })
-        }
-    })
-})
-
-app.post('/api/posts', (req, res, next) => {
-    const post = new Post({
-        title: req.body.title,
-        content: req.body.content
-    })
-    post.save().then(createdPost => {
-        console.log(createdPost)
-        res.status(201).json({
-            message: 'Post added successfully',
-            postId: createdPost.id
-        })
-    })
-})
-
-app.put('/api/posts/:id', (req, res, next) => {
-    const id = req.params.id
-    const title = req.body.title;
-    const content = req.body.content;
-    Post.updateOne({ _id: id }, {title, content}).then(result => {
-        console.log(result)
-        res.status(200).json({ message: 'post updated successfully' })
-    })
-})
-
-app.delete('/api/posts/:id', (req, res, next) => {
-    const id = req.params.id
-    Post.deleteOne({ _id: id }).then(result => {
-        console.log(result)
-        res.status(200).json({ message: 'post deleted successfully!' })
-    })
-})
+app.use('/api/posts', postsRoutes)
 
 module.exports = app
