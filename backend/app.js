@@ -25,21 +25,11 @@ app.use((req, res, next) => {
 });
 
 app.get('/api/posts', (req, res, next) => {
-    const posts = [
-        {
-            id: '35asdfas3453',
-            title: 'my first server post',
-            content: 'this is the content of my first server post'
-        },
-        {
-            id: '35asdfsdfasd',
-            title: 'my second server post',
-            content: 'this is the content of my second server post'
-        }
-    ];
-    res.status(200).json({
-        message: 'Posts fetched successfully',
-        posts: posts
+    Post.find().then(posts => {
+        res.status(200).json({
+            message: 'Posts fetched successfully',
+            posts: posts
+        })
     })
 })
 
@@ -48,7 +38,7 @@ app.post('/api/posts', (req, res, next) => {
         title: req.body.title,
         content: req.body.content
     })
-    console.log(post);
+    post.save()
     res.status(201).json({
         message: 'Post added successfully'
     })
