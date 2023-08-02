@@ -7,7 +7,7 @@
         <button type="button" mat-stroked-button (click)="filePicker.click()">Select Image...</button>
         <input type="file" #filePicker (change)="onImageSelected($event)">
         <div class="image-preview">
-            <img *ngIf="imagePreview" [src]="imagePreview" [alt]="form.value.title">
+            <img *ngIf="imagePreview && form.get('image').valid" [src]="imagePreview" [alt]="form.value.title">
         </div>
         <mat-form-field>
             <textarea matInput rows="6" name="content" placeholder="Post Content" formControlName="content"></textarea>
