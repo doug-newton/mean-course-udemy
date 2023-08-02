@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { PostsService } from "../posts.service";
 import { ActivatedRoute, ParamMap } from "@angular/router";
 import { Post } from '../post.model';
@@ -16,10 +16,18 @@ export class PostCreateComponent implements OnInit {
     private mode = "create"
     private postId: string
 
+    form: FormGroup
+
     constructor(private postsService: PostsService, public route: ActivatedRoute) {
     }
 
     ngOnInit(): void {
+
+        this.form = new FormGroup({
+            title: new FormControl(null, { validators: [Validators.required] }),
+            content: new FormControl(null, { validators: [Validators.required] })
+        })
+
         this.route.paramMap.subscribe((paramMap: ParamMap) => {
             if (paramMap.has('postId')) {
                 this.mode = "edit"
@@ -31,6 +39,10 @@ export class PostCreateComponent implements OnInit {
                         title: response.post.title,
                         content: response.post.content,
                     }
+                    this.form.setValue({
+                        title: this.post.title,
+                        content: this.post.content
+                    })
                 })
             }
             else {
@@ -40,21 +52,20 @@ export class PostCreateComponent implements OnInit {
         })
     }
 
-    onSavePost(postForm: NgForm) {
-        if (postForm.invalid) return;
+    onSavePost() {
+        if (this.form.invalid) return;
 
         if (this.mode == "create") {
-
             this.postsService.addPost(
-                postForm.value.title,
-                postForm.value.content
+                this.form.value.title,
+                this.form.value.content
             )
         }
         else if (this.mode == "edit") {
 
-            this.postsService.updatePost(this.post.id, postForm.value.title, postForm.value.content)
+            this.postsService.updatePost(this.post.id, this.form.value.title, this.form.value.content)
         }
 
-        postForm.resetForm()
+        this.form.reset()
     }
 }
