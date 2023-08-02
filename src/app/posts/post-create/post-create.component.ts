@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { PostsService } from "../posts.service";
 import { ActivatedRoute, ParamMap } from "@angular/router";
@@ -9,7 +9,7 @@ import { Post } from '../post.model';
     templateUrl: './post-create.component.html',
     styleUrls: ['./post-create.component.scss']
 })
-export class PostCreateComponent {
+export class PostCreateComponent implements OnInit {
     postTitle=''
     postContent=''
     post: Post
@@ -17,6 +17,9 @@ export class PostCreateComponent {
     private postId: string
 
     constructor(private postsService: PostsService, public route: ActivatedRoute) {
+    }
+
+    ngOnInit(): void {
         this.route.paramMap.subscribe((paramMap: ParamMap) => {
             if (paramMap.has('postId')) {
                 this.mode = "edit"
