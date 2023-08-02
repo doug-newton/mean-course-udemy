@@ -26,7 +26,6 @@ export class PostsService {
         }))
         .subscribe({
             next: posts => {
-                console.log(posts)
                 this.posts = posts
                 this.posts$.next([...this.posts])
             }
@@ -54,7 +53,6 @@ export class PostsService {
 
         this.http.post<{ message: string, postId: string }>('http://localhost:3000/api/posts', postData).subscribe({
             next: response => {
-                console.log(response)
                 const post: Post = {
                     id: response.postId,
                     title: title,
@@ -88,7 +86,6 @@ export class PostsService {
     deletePost(postId: string) {
         this.http.delete<{message: string}>('http://localhost:3000/api/posts/' + postId).subscribe({
             next: response => {
-                console.log(response.message);
                 this.posts = this.posts.filter((post) => post.id !== postId)
                 this.posts$.next([...this.posts])
             }

@@ -37,7 +37,6 @@ export class PostCreateComponent implements OnInit {
                 this.mode = "edit"
                 this.postId = paramMap.get('postId')
                 this.postsService.getPost(this.postId).subscribe(response => {
-                    console.log(response)
                     this.post = {
                         id: response.post._id,
                         title: response.post.title,

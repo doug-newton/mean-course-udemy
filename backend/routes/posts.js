@@ -59,7 +59,6 @@ router.post('/', multer({ storage: storage }).single("image"), (req, res, next) 
         content: req.body.content
     })
     post.save().then(createdPost => {
-        console.log(createdPost)
         res.status(201).json({
             message: 'Post added successfully',
             postId: createdPost.id
@@ -72,7 +71,6 @@ router.put('/:id', (req, res, next) => {
     const title = req.body.title;
     const content = req.body.content;
     Post.updateOne({ _id: id }, {title, content}).then(result => {
-        console.log(result)
         res.status(200).json({ message: 'post updated successfully' })
     })
 })
@@ -80,7 +78,6 @@ router.put('/:id', (req, res, next) => {
 router.delete('/:id', (req, res, next) => {
     const id = req.params.id
     Post.deleteOne({ _id: id }).then(result => {
-        console.log(result)
         res.status(200).json({ message: 'post deleted successfully!' })
     })
 })
