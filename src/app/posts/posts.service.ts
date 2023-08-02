@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Post } from "./post.model";
 import { BehaviorSubject, Observable, map } from "rxjs";
 import { HttpClient } from "@angular/common/http";
-import { response } from "express";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -11,7 +11,7 @@ export class PostsService {
     private posts: Post[] = []
     public posts$: BehaviorSubject<Post[]> = new BehaviorSubject(this.posts)
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private router: Router) { }
 
     getPosts() {
         this.http.get<{message:string, posts: any[]}>('http://localhost:3000/api/posts')
@@ -58,6 +58,7 @@ export class PostsService {
                 post.id = response.postId
                 this.posts.push(post);
                 this.posts$.next([...this.posts]);
+                this.router.navigate(["/"])
             }
         })
     }
@@ -76,6 +77,7 @@ export class PostsService {
                 updatedPosts[oldPostIndex] = post;
                 this.posts = updatedPosts;
                 this.posts$.next([...this.posts])
+                this.router.navigate(["/"])
             })
     }
 
