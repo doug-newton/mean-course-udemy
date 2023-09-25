@@ -63,14 +63,6 @@ export class PostsService {
 
         this.http.post<{ message: string, post: Post }>('http://localhost:3000/api/posts', postData).subscribe({
             next: response => {
-                const post: Post = {
-                    id: response.post.id,
-                    title: title,
-                    content: content,
-                    imagePath: response.post.imagePath
-                }
-                this.posts.push(post);
-                this.posts$.next([...this.posts]);
                 this.router.navigate(["/"])
             }
         })
@@ -97,31 +89,11 @@ export class PostsService {
 
         this.http.put('http://localhost:3000/api/posts/' + id, postData)
             .subscribe(response => {
-                const updatedPosts = [...this.posts]
-                const oldPostIndex = updatedPosts.findIndex(p => p.id === id);
-
-                const post: Post = {
-                    id: id,
-                    title: title,
-                    content: content,
-                    imagePath: ''
-                }
-
-                updatedPosts[oldPostIndex] = post;
-                this.posts = updatedPosts;
-                console.log(this.posts)
-                this.posts$.next([...this.posts])
                 this.router.navigate(["/"])
-
             })
     }
 
-    deletePost(postId: string) {
-        this.http.delete<{message: string}>('http://localhost:3000/api/posts/' + postId).subscribe({
-            next: response => {
-                this.posts = this.posts.filter((post) => post.id !== postId)
-                this.posts$.next([...this.posts])
-            }
-        })
+    deletePost(postId: string): Observable<{message:string}> {
+        return this.http.delete<{message: string}>('http://localhost:3000/api/posts/' + postId)
     }
 }

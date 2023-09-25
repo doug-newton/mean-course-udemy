@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { Post } from "../post.model";
 import { PostsService } from "../posts.service";
 import { PageEvent } from "@angular/material/paginator";
+import { response } from "express";
 
 @Component({
     selector: 'app-post-list',
@@ -24,7 +25,11 @@ export class PostListComponent implements OnInit {
     }
 
     onDelete(postId: string) {
-        this.postsService.deletePost(postId)
+        this.postsService.deletePost(postId).subscribe({
+            next: response => {
+                this.postsService.getPosts(this.pageSize, this.pageIndex)
+            }
+        })
     }
 
     onChangePage(pageData: PageEvent) {
