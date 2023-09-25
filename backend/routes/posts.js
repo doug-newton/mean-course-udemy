@@ -71,11 +71,25 @@ router.post('/', multer({ storage: storage }).single("image"), (req, res, next) 
     })
 })
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id', multer({ storage: storage }).single("image"), (req, res, next) => {
+
+    let imagePath = req.body.imagePath;
+
+    if (req.file) {
+        const url = req.protocol + '://' + req.get('host')
+        imagePath = url + '/images/' + req.file.filename;
+    }
+
+    const post = {
+        title: req.body.title,
+        content: req.body.content,
+        imagePath: imagePath
+    }
+
     const id = req.params.id
     const title = req.body.title;
     const content = req.body.content;
-    Post.updateOne({ _id: id }, {title, content}).then(result => {
+    Post.updateOne({ _id: id }, post).then(result => {
         res.status(200).json({ message: 'post updated successfully' })
     })
 })
