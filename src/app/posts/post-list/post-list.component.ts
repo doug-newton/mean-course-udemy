@@ -13,13 +13,14 @@ export class PostListComponent implements OnInit {
     constructor(public postsService: PostsService) { }
 
     totalPosts: number = 10
-    postsPerPage: number = 2
+    pageSize: number = 2
+    pageIndex: number = 0
     pageSizeOptions = [1, 2, 5, 10]
 
     public posts$ = this.postsService.posts$
 
     ngOnInit(): void {
-        this.postsService.getPosts()
+        this.postsService.getPosts(this.pageSize, this.pageIndex)
     }
 
     onDelete(postId: string) {
@@ -27,6 +28,9 @@ export class PostListComponent implements OnInit {
     }
 
     onChangePage(pageData: PageEvent) {
-        console.log(pageData)
+        this.pageSize = pageData.pageSize
+        this.pageIndex = pageData.pageIndex
+
+        this.postsService.getPosts(this.pageSize, this.pageIndex)
     }
 }

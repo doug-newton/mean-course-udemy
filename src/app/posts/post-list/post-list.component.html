@@ -14,8 +14,9 @@
     </mat-expansion-panel>
 </mat-accordion>
 <mat-paginator 
+    [pageSize]="pageSize" 
+    [pageIndex]="pageIndex"
     [length]="totalPosts" 
-    [pageSize]="postsPerPage" 
     [pageSizeOptions]="pageSizeOptions"
     (page)="onChangePage($event)"
 ></mat-paginator>
