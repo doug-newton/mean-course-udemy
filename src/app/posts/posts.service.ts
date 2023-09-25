@@ -10,30 +10,36 @@ import { Router } from "@angular/router";
 export class PostsService {
     private posts: Post[] = []
     public posts$: BehaviorSubject<Post[]> = new BehaviorSubject(this.posts)
+    private totalPosts: number = 0
+    public totalPosts$: BehaviorSubject<number> = new BehaviorSubject(0)
 
     constructor(private http: HttpClient, private router: Router) { }
 
     getPosts(pageSize: number, pageIndex: number) {
         let queryParams = `?pageSize=${pageSize}&pageIndex=${pageIndex}`
-        console.log(queryParams)
 
-        this.http.get<{message:string, posts: any[]}>('http://localhost:3000/api/posts' + queryParams)
-        .pipe(map((response) => {
-            return response.posts.map((post) => {
+        this.http.get<{ message: string, totalPosts: number, posts: any[] }>('http://localhost:3000/api/posts' + queryParams)
+            .pipe(map((response) => {
                 return {
-                    title: post.title,
-                    content: post.content,
-                    id: post._id,
-                    imagePath: post.imagePath
+                    totalPosts: response.totalPosts,
+                    posts: response.posts.map((post) => {
+                        return {
+                            title: post.title,
+                            content: post.content,
+                            id: post._id,
+                            imagePath: post.imagePath
+                        }
+                    })
                 }
-            })
-        }))
-        .subscribe({
-            next: posts => {
-                this.posts = posts
-                this.posts$.next([...this.posts])
-            }
-        });
+            }))
+            .subscribe({
+                next: postData => {
+                    this.posts = postData.posts
+                    this.posts$.next([...this.posts])
+                    this.totalPosts = postData.totalPosts
+                    this.totalPosts$.next(this.totalPosts)
+                }
+            });
     }
 
     getPost(postId: string): Observable<{

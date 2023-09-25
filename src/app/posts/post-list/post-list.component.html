@@ -16,7 +16,7 @@
 <mat-paginator 
     [pageSize]="pageSize" 
     [pageIndex]="pageIndex"
-    [length]="totalPosts" 
+    [length]="totalPosts$ | async" 
     [pageSizeOptions]="pageSizeOptions"
     (page)="onChangePage($event)"
 ></mat-paginator>

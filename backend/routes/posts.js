@@ -38,9 +38,12 @@ router.get('/', (req, res, next) => {
     }
 
     postQuery.then(posts => {
-        res.status(200).json({
-            message: 'Posts fetched successfully',
-            posts: posts
+        Post.count().then(totalPosts => {
+            res.status(200).json({
+                message: 'Posts fetched successfully',
+                totalPosts: totalPosts,
+                posts: posts
+            })
         })
     })
 })
