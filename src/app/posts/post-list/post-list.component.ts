@@ -3,6 +3,8 @@ import { Post } from "../post.model";
 import { PostsService } from "../posts.service";
 import { PageEvent } from "@angular/material/paginator";
 import { response } from "express";
+import { AuthService } from "src/app/auth/auth.service";
+import { Observable } from "rxjs";
 
 @Component({
     selector: 'app-post-list',
@@ -11,7 +13,7 @@ import { response } from "express";
 })
 export class PostListComponent implements OnInit {
 
-    constructor(public postsService: PostsService) { }
+    constructor(public postsService: PostsService, private authService: AuthService) { }
 
     pageSize: number = 2
     pageIndex: number = 0
@@ -19,6 +21,7 @@ export class PostListComponent implements OnInit {
 
     public posts$ = this.postsService.posts$
     public totalPosts$ = this.postsService.totalPosts$
+    public authStatus$: Observable<boolean> = this.authService.authStatus$
 
     ngOnInit(): void {
         this.postsService.getPosts(this.pageSize, this.pageIndex)

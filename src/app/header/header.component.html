@@ -2,14 +2,23 @@
     <span><a routerLink="/">My App</a></span>
     <span class="spacer"></span>
     <ul>
-        <li>
-            <a mat-button routerLink="/create" routerLinkActive="mat-accent">New Post</a>
-        </li>
-        <li>
-            <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
-        </li>
-        <li>
-            <a mat-button routerLink="/signup" routerLinkActive="mat-accent">Sign up</a>
-        </li>
+        <ng-container *ngIf="authStatus$ | async; else unauthenticated">
+            <li>
+                <a mat-button routerLink="/create" routerLinkActive="mat-accent">New Post</a>
+            </li>
+            <li>
+                <button mat-button>Logout</button>
+            </li>
+        </ng-container>
+
+        <ng-template #unauthenticated>
+            <li>
+                <a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a>
+            </li>
+            <li>
+                <a mat-button routerLink="/signup" routerLinkActive="mat-accent">Sign up</a>
+            </li>
+        </ng-template>
+
     </ul>
 </mat-toolbar>

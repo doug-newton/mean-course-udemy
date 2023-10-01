@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { AuthData } from "./auth-data.model";
 import { response } from "express";
+import { BehaviorSubject, Subject } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +14,8 @@ export class AuthService {
     ) { }
 
     private token: string
+    private authStatusSubject$: BehaviorSubject<boolean> = new BehaviorSubject(false)
+    public authStatus$ = this.authStatusSubject$.asObservable()
 
     getToken(): string {
         return this.token
@@ -40,6 +43,7 @@ export class AuthService {
         this.http.post<{token: string}>('http://localhost:3000/api/users/login', authData).subscribe({
             next: response => {
                 this.token = response.token
+                this.authStatusSubject$.next(true)
             }
         })
     }
