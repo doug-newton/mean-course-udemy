@@ -2,6 +2,7 @@ const path = require("path")
 const express = require('express')
 const mongoose = require('mongoose')
 const postsRoutes = require('./routes/posts')
+const usersRoutes = require('./routes/users')
 
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
 .then(()=>{
@@ -27,5 +28,6 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/posts', postsRoutes)
+app.use('/api/users', usersRoutes)
 
 module.exports = app
