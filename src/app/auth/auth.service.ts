@@ -40,10 +40,12 @@ export class AuthService {
             password: password
         }
 
-        this.http.post<{token: string}>('http://localhost:3000/api/users/login', authData).subscribe({
+        this.http.post<{ token: string }>('http://localhost:3000/api/users/login', authData).subscribe({
             next: response => {
                 this.token = response.token
-                this.authStatusSubject$.next(true)
+                if (this.token) {
+                    this.authStatusSubject$.next(true)
+                }
             }
         })
     }
