@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { AuthData } from "./auth-data.model";
-import { response } from "express";
 import { BehaviorSubject, Subject } from "rxjs";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +10,8 @@ import { BehaviorSubject, Subject } from "rxjs";
 export class AuthService {
 
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
+        private router: Router
     ) { }
 
     private token: string
@@ -45,6 +46,7 @@ export class AuthService {
                 this.token = response.token
                 if (this.token) {
                     this.authStatusSubject$.next(true)
+                    this.router.navigate(['/']);
                 }
             }
         })
@@ -53,5 +55,6 @@ export class AuthService {
     logout() {
         this.token = null
         this.authStatusSubject$.next(false)
+        this.router.navigate(['/']);
     }
 }
