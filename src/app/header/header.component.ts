@@ -16,5 +16,8 @@ export class HeaderComponent {
         private authService: AuthService
     ) { }
 
+    onLogout() {
+        this.authService.logout()
+    }
 
 }
