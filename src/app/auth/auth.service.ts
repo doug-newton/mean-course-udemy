@@ -17,6 +17,7 @@ export class AuthService {
     private token: string
     private authStatusSubject$: BehaviorSubject<boolean> = new BehaviorSubject(false)
     public authStatus$ = this.authStatusSubject$.asObservable()
+    private tokenTimeout: NodeJS.Timeout;
 
     getToken(): string {
         return this.token
@@ -41,12 +42,15 @@ export class AuthService {
             password: password
         }
 
-        this.http.post<{ token: string }>('http://localhost:3000/api/users/login', authData).subscribe({
+        this.http.post<{ token: string, expiresIn: number }>('http://localhost:3000/api/users/login', authData).subscribe({
             next: response => {
                 this.token = response.token
                 if (this.token) {
                     this.authStatusSubject$.next(true)
                     this.router.navigate(['/']);
+
+                    const expiresIn = response.expiresIn;
+                    this.tokenTimeout = setTimeout(() => this.logout(), expiresIn * 1000)
                 }
             }
         })
@@ -56,5 +60,6 @@ export class AuthService {
         this.token = null
         this.authStatusSubject$.next(false)
         this.router.navigate(['/']);
+        clearTimeout(this.tokenTimeout)
     }
 }
