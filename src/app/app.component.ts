@@ -16,10 +16,4 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.authService.autoAuthUser()
   }
-
-  posts: Post[] = []
-
-  onPostAdded(post: Post) {
-    this.posts.push(post)
-  }
 }
