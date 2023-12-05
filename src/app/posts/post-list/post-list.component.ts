@@ -22,6 +22,7 @@ export class PostListComponent implements OnInit {
     public posts$ = this.postsService.posts$
     public totalPosts$ = this.postsService.totalPosts$
     public authStatus$: Observable<boolean> = this.authService.authStatus$
+    public userId$: Observable<string> = this.authService.userId$
 
     ngOnInit(): void {
         this.postsService.getPosts(this.pageSize, this.pageIndex)
