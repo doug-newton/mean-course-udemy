@@ -103,15 +103,27 @@ router.put('/:id', checkAuth, multer({ storage: storage }).single("image"), (req
     const id = req.params.id
     const title = req.body.title;
     const content = req.body.content;
-    Post.updateOne({ _id: id }, post).then(result => {
-        res.status(200).json({ message: 'post updated successfully' })
+    const userId = req.userData.userId
+    Post.updateOne({ _id: id, creator: userId }, post).then(result => {
+        if (result.modifiedCount > 0) {
+            res.status(200).json({ message: 'post updated successfully' })
+        }
+        else {
+            res.status(401).json({ message: 'Unauthorized' })
+        }
     })
 })
 
 router.delete('/:id', checkAuth, (req, res, next) => {
     const id = req.params.id
-    Post.deleteOne({ _id: id }).then(result => {
-        res.status(200).json({ message: 'post deleted successfully!' })
+    const userId = req.userData.userId
+    Post.deleteOne({ _id: id, creator: userId }).then(result => {
+        if (result.deletedCount > 0) {
+            res.status(200).json({ message: 'post deleted successfully!' })
+        }
+        else {
+            res.status(401).json({ message: 'Unauthorized' })
+        }
     })
 })
 
