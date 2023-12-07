@@ -5,8 +5,7 @@ import { PostCreateComponent } from "./post-create/post-create.component";
 import { AngularMaterialModule } from "../angular-material.module";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { BrowserModule } from "@angular/platform-browser";
-import { AppRoutingModule } from "../app-routing.module";
+import { RouterModule } from "@angular/router";
 
 @NgModule({
     declarations: [
@@ -14,16 +13,11 @@ import { AppRoutingModule } from "../app-routing.module";
         PostCreateComponent
     ],
     imports: [
-        CommonModule,
-        BrowserModule,
-        AppRoutingModule,
-        ReactiveFormsModule,
-        FormsModule,
-        AngularMaterialModule
-    ],
-    exports: [
-        PostListComponent,
-        PostCreateComponent
+        CommonModule, // required for *ngIf, etc
+        RouterModule, // required for the routerLink directive, Router service, etc
+        ReactiveFormsModule, // declarative forms
+        FormsModule, // template-driven forms
+        AngularMaterialModule // material components
     ]
 })
 export class PostsModule { }
