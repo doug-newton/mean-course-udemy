@@ -22,9 +22,13 @@ router.post('/signup', (req, res, next) => {
                 })
                 .catch(err => {
                     res.status(500).json({
-                        message: "signup failed"
+                        message: "invalid user credentials"
                     })
                 })
+        }).catch(error => {
+            res.status(500).json({
+                message: "signup failed"
+            })
         })
 })
 

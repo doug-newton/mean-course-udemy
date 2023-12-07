@@ -46,6 +46,10 @@ router.get('/', (req, res, next) => {
                 posts: posts
             })
         })
+    }).catch(error => {
+        res.status(500).json({
+            message: 'failed to retrieve posts'
+        })
     })
 })
 
@@ -64,6 +68,10 @@ router.get('/:id', (req, res, next) => {
                 post: null
             })
         }
+    }).catch(error => {
+        res.status(500).json({
+            message: 'failed to retrieve post'
+        })
     })
 })
 
@@ -82,6 +90,10 @@ router.post('/', checkAuth, multer({ storage: storage }).single("image"), (req, 
                 ...createdPost,
                 id: createdPost._id,
             }
+        })
+    }).catch(error => {
+        res.status(500).json({
+            message: 'Failed to save post'
         })
     })
 })
@@ -111,6 +123,8 @@ router.put('/:id', checkAuth, multer({ storage: storage }).single("image"), (req
         else {
             res.status(401).json({ message: 'Unauthorized' })
         }
+    }).catch(error => {
+        res.status(500).json({ message: 'failed to update post' })
     })
 })
 
@@ -124,6 +138,10 @@ router.delete('/:id', checkAuth, (req, res, next) => {
         else {
             res.status(401).json({ message: 'Unauthorized' })
         }
+    }).catch(error => {
+        res.status(500).json({
+            message: 'post deletion failed'
+        })
     })
 })
 
