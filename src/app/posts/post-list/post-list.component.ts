@@ -15,7 +15,7 @@ export class PostListComponent implements OnInit {
 
     constructor(public postsService: PostsService, private authService: AuthService) { }
 
-    pageSize: number = 2
+    pageSize: number = 20
     pageIndex: number = 0
     pageSizeOptions = [1, 2, 5, 10]
 
