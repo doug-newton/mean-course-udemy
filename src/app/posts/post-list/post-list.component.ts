@@ -1,8 +1,6 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { Post } from "../post.model";
+import { Component, OnInit } from "@angular/core";
 import { PostsService } from "../posts.service";
 import { PageEvent } from "@angular/material/paginator";
-import { response } from "express";
 import { AuthService } from "src/app/auth/auth.service";
 import { Observable } from "rxjs";
 

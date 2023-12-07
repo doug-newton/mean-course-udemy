@@ -4,6 +4,12 @@ import { AuthData } from "./auth-data.model";
 import { BehaviorSubject, Subject } from "rxjs";
 import { Router } from "@angular/router";
 
+import { environment } from "src/environments/environment";
+
+const USERS_URL = environment.apiUrl + 'users/'
+const SIGNUP_URL = USERS_URL + 'signup'
+const LOGIN_URL = USERS_URL + 'login'
+
 @Injectable({
     providedIn: 'root'
 })
@@ -32,7 +38,7 @@ export class AuthService {
             password: password
         }
 
-        this.http.post('http://localhost:3000/api/users/signup', authData).subscribe({
+        this.http.post(SIGNUP_URL, authData).subscribe({
             next: response => {
                 console.log(response)
             }
@@ -45,7 +51,7 @@ export class AuthService {
             password: password
         }
 
-        this.http.post<{ token: string, expiresIn: number, userId: string }>('http://localhost:3000/api/users/login', authData).subscribe({
+        this.http.post<{ token: string, expiresIn: number, userId: string }>(LOGIN_URL, authData).subscribe({
             next: response => {
                 this.token = response.token
                 if (this.token) {

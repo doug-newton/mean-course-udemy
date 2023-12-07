@@ -4,6 +4,10 @@ import { BehaviorSubject, Observable, map } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 
+import { environment } from "src/environments/environment";
+
+const POSTS_URL = environment.apiUrl + 'posts/'
+
 @Injectable({
     providedIn: 'root'
 })
@@ -18,7 +22,7 @@ export class PostsService {
     getPosts(pageSize: number, pageIndex: number) {
         let queryParams = `?pageSize=${pageSize}&pageIndex=${pageIndex}`
 
-        this.http.get<{ message: string, totalPosts: number, posts: any[] }>('http://localhost:3000/api/posts' + queryParams)
+        this.http.get<{ message: string, totalPosts: number, posts: any[] }>(POSTS_URL + queryParams)
             .pipe(map((response) => {
                 return {
                     totalPosts: response.totalPosts,
@@ -52,7 +56,7 @@ export class PostsService {
             message: string, post: {
                 _id: string, title: string, content: string, imagePath: string
             }
-        }>('http://localhost:3000/api/posts/' + postId);
+        }>(POSTS_URL + postId);
     }
 
     addPost(title: string, content: string, image: File) {
@@ -62,7 +66,7 @@ export class PostsService {
         postData.append("image", image, title)
 
 
-        this.http.post<{ message: string, post: Post }>('http://localhost:3000/api/posts', postData).subscribe({
+        this.http.post<{ message: string, post: Post }>(POSTS_URL, postData).subscribe({
             next: response => {
                 this.router.navigate(["/"])
             }
@@ -88,13 +92,13 @@ export class PostsService {
             }
         }
 
-        this.http.put('http://localhost:3000/api/posts/' + id, postData)
+        this.http.put(POSTS_URL + id, postData)
             .subscribe(response => {
                 this.router.navigate(["/"])
             })
     }
 
     deletePost(postId: string): Observable<{message:string}> {
-        return this.http.delete<{message: string}>('http://localhost:3000/api/posts/' + postId)
+        return this.http.delete<{message: string}>(POSTS_URL+ postId)
     }
 }
